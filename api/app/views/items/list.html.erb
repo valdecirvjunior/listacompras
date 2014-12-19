@@ -1,0 +1,38 @@
+<h1>Lista de compras</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th><%= link_to "Produto", :sort => "produto", :visualizar => params[:visualizar] %></th>
+      <th><%= link_to "Quantidade", :sort => "quantidade", :visualizar => params[:visualizar] %></th>
+      <th><%= link_to "Prioridade", :sort => "importante desc", :visualizar => params[:visualizar] %></th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @items.each do |item| %>
+      <tr>
+        <td><%= item.produto %></td>
+        <td><%= item.quantidade %></td>
+        <% if item.importante %>
+          <td>importante</td>
+        <% else %>
+          <td></td>
+        <% end %>
+        <td><%= link_to 'Editar', edit_item_path(item) %></td>
+        <td><%= link_to 'Remover', item, method: :delete, data: { confirm: 'Tem certeza?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<br>
+
+<%= link_to 'Adicionar produto', new_item_path %>
+<% if params[:visualizar] %>
+  <th><%= link_to "Ver todos", :sort => params[:sort] %></th>
+<% else %>
+  <th><%= link_to "Somente importantes", :visualizar => "importante", :sort => params[:sort] %></th>
+<% end %>
