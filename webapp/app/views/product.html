@@ -1,0 +1,51 @@
+<body>
+  <div class="jumbotron">
+    <h1>Lista de Compras</h1>
+    <p>beta</p>
+  </div>
+  <div ng-controller="productController">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th><a ng-click="order = 'produto'" >Produto</a></th>
+          <th><a ng-click="order = 'quantidade'">Quantidade</a></th>
+          <th><a ng-click="filtro = !filtro">Importante</a></th>
+        </tr>
+      </thead>
+      <tbody>
+        <form class="form-inline" name="formItem">
+          <tr>
+            <td><input type="text" ng-model="product.produto" ng-required="true"></td>
+            <td><input type="text" ng-model="product.quantidade" ng-required="true"></td>
+            <td><input type="checkbox" ng-model="product.importante"></td>
+            <td><button ng-click="save(product)" class="btn btn-primary btn-large" ng-disabled="!(product.produto && product.quantidade)">Adicionar</button></td>
+          </tr>
+        </form>
+          <tr ng-repeat="product in products | orderBy:order | filter:filtro || undefined">
+            <td> <!-- Produto -->
+              <span ng-bind="product.produto" ng-hide="product.edit"></span> 
+              <input type="text" ng-model="product.produto" ng-show="product.edit">
+            </td>
+            <td> <!-- Quantidade -->
+              <span ng-bind="product.quantidade" ng-hide="product.edit"></span>
+              <input type="text" ng-model="product.quantidade" ng-show="product.edit">
+            </td>
+            <td> <!-- Importante -->
+              <span ng-hide="product.edit || !product.importante">Sim</span>
+              <span ng-hide="product.edit || product.importante">Não</span>
+              <input type="checkbox" ng-model="product.importante" ng-show="product.edit">
+            </td>
+            <td>
+              <button ng-hide="product.edit" type="button" class="btn btn-primay btn-large" ng-click="product.edit = true">
+              Editar </button>
+              <button type="button" ng-show="product.edit" class="btn btn-primay btn-large" ng-click="update(product); product.edit = false"> Salvar </button>
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger" ng-click="remove(product, $index)"> Remover </button>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+    <h4 ng-if="listaVazia(product)" align="center">Lista Vazia!</h4> 
+  </div>
+</body>
